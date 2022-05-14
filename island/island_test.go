@@ -38,6 +38,12 @@ func TestIsland3(t *testing.T) {
 	}
 }
 
+func BenchmarkGetIsland(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		GetIsland(686)
+	}
+}
+
 func diff(a1,a2 []int) bool {
 	if len(a1)<len(a2){
 		a1,a2 = a2,a1
