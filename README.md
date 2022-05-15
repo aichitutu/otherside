@@ -1,7 +1,7 @@
 # Island
 Distinguish island in otherside
 
-#Quick start
+# Quick start
 > go mod tidy
 > 
 > go run main.go
