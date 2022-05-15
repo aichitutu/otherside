@@ -5,9 +5,9 @@ import (
 	"os"
 )
 
-var Graph = make(map[int][]int)
+const maxVariance = 10e-7
 
-var maxVariance = 10e-7
+var Graph = make(map[int][]int)
 
 func init() {
 	bs,err := os.ReadFile("./data.json")
@@ -17,22 +17,20 @@ func init() {
 			panic(err)
 		}
 	}
-	var is struct {
-		Data [][3]float64
-	}
-	err = json.Unmarshal(bs,&is)
+	var data [][2]float64
+	err = json.Unmarshal(bs,&data)
 	if err != nil{
 		panic(err)
 	}
-	data := is.Data
 	for i,arr := range data{
 		for j := i+1; j < len(data); j++{
-			if distance(arr[1],arr[2],data[j][1],data[j][2])<maxVariance{
+			if distance(arr[0],arr[1],data[j][0],data[j][1])<maxVariance{
 				Graph[i] = append(Graph[i],j)
 				Graph[j] = append(Graph[j],i)
 			}
 		}
 	}
+	go initWebData(data[:20000])
 }
 
 func distance(x1,y1,x2,y2 float64) float64 {
@@ -41,34 +39,24 @@ func distance(x1,y1,x2,y2 float64) float64 {
 
 func bfs(start int, nodes map[int][]int, fn func(int)) {
 	frontier := []int{start}
-	visited := map[int]bool{}
+	visited := map[int]bool{
+		start: true,
+	}
 	var next []int
 
 	for 0 < len(frontier) {
 		next = []int{}
 		for _, node := range frontier {
-			if visited[node] {
-				continue
-			}
-			visited[node] = true
 			fn(node)
-			for _, n := range bfsFrontier(node, nodes, visited) {
-				next = append(next, n)
+			for _,n := range nodes[node]{
+				if !visited[n]{
+					visited[n] = true
+					next = append(next, n)
+				}
 			}
 		}
 		frontier = next
 	}
-}
-
-func bfsFrontier(node int, nodes map[int][]int, visited map[int]bool) []int {
-	var next []int
-	iter := func(n int) bool { _, ok := visited[n]; return !ok }
-	for _, n := range nodes[node] {
-		if iter(n) {
-			next = append(next, n)
-		}
-	}
-	return next
 }
 
 func GetIsland(num int) (v []int){
