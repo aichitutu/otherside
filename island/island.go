@@ -3,13 +3,16 @@ package island
 import (
 	"encoding/json"
 	"os"
+	"time"
 )
 
 const maxVariance = 10e-7
 
+var T int64
 var Graph = make(map[int][]int)
 
 func init() {
+	T = time.Now().UnixNano()
 	bs,err := os.ReadFile("./data.json")
 	if err != nil{
 		bs,err = os.ReadFile("../data.json")
@@ -31,6 +34,10 @@ func init() {
 		}
 	}
 	go initWebData(data[:20000])
+}
+
+func fitPoint(x,y float64) bool {
+	return x>0.456 && x<0.5492 && y>0.455 && y<0.551
 }
 
 func distance(x1,y1,x2,y2 float64) float64 {

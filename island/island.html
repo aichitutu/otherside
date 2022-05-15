@@ -49,6 +49,15 @@
             max:0.56,
             inverse: true
         },
+        tooltip: {
+            show:true,
+            formatter: (v)=>{
+                let str = `${v.seriesName}<br/>`
+                str += `${v.marker}${v.data[0]}<br/>`
+                str += `${v.marker}${v.data[1]}<br/>`
+                return str
+            }
+        },
         series: [
             {
                 name:'Center Island',
