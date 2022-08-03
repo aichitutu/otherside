@@ -1,4 +1,4 @@
-# Island
+# Otherdeed for Otherside
 Distinguish island in otherside
 ![image](https://user-images.githubusercontent.com/44285810/182517379-ec157906-8f04-4953-b69c-15d542b847a4.png)
 
